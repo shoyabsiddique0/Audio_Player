@@ -1,50 +1,69 @@
+import 'package:audio_player/player/view/player_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class Tiles extends StatelessWidget {
-  const Tiles({Key? key}) : super(key: key);
+  final String name;
+  final String artist;
+  final String image;
+  final String duration;
+  const Tiles(
+      {Key? key,
+      required this.name,
+      required this.artist,
+      required this.image,
+      required this.duration})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.asset(
-        "assets/PlaylistAssets/songCard.png",
-        width: 80.w,
-        height: 80.w,
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Tujh Mein Rab Dikhta hai",
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 18.w),
-          ),
-          SvgPicture.asset("assets/PlaylistAssets/options.svg")
-        ],
-      ),
-      subtitle: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Shreya Ghosal, Salim - Sulaiman",
-            style: TextStyle(color: Colors.white, fontSize: 12.w),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "4:41 ",
-                style: TextStyle(color: Colors.white, fontSize: 15.w),
-              ),
-              SvgPicture.asset("assets/PlaylistAssets/heart.svg"),
-            ],
-          )
-        ],
+    return Container(
+      margin: EdgeInsets.only(top: 6.w),
+      child: ListTile(
+        onTap: () => Get.to(() => PlayerView()),
+        leading: Image.asset(
+          image,
+          width: 80.w,
+          height: 80.w,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.w),
+            ),
+            SvgPicture.asset("assets/PlaylistAssets/options.svg")
+          ],
+        ),
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              artist,
+              style: TextStyle(color: Colors.white, fontSize: 12.w),
+            ),
+            SizedBox(
+              height: 6.w,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  duration,
+                  style: TextStyle(color: Colors.white, fontSize: 15.w),
+                ),
+                SvgPicture.asset("assets/PlaylistAssets/heart.svg"),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

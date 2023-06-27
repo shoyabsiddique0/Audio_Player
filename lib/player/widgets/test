@@ -1,0 +1,97 @@
+
+
+    DropdownMenu(
+        width: 95,
+        dropdownMenuEntries: const [
+            DropdownMenuEntry(value: "0.25X", label: "0.25X"),
+                DropdownMenuEntry(value: "0.5X", label: "0.5X"),
+                DropdownMenuEntry(value: "0.75X", label: "0.75X"),
+                DropdownMenuEntry(value: "1.0X", label: "1.0X"),
+                DropdownMenuEntry(value: "1.25X", label: "1.25X"),
+                DropdownMenuEntry(value: "1.5X", label: "1.5X"),
+                DropdownMenuEntry(value: "1.75X", label: "1.75X"),
+                DropdownMenuEntry(value: "2.0X", label: "2.0X"),
+                    ],
+textStyle: const TextStyle(color: Colors.white),
+    inputDecorationTheme: const InputDecorationTheme(
+        fillColor: Colors.grey, suffixIconColor: Colors.white),
+        initialSelection: "1.0X",
+            onSelected: (value) {
+                if (value == "0.25X") {
+                    controller.audioPlayer.value.setSpeed(0.25);
+                }
+                if (value == "0.5X") {
+                    controller.audioPlayer.value.setSpeed(0.5);
+                }
+                if (value == "0.75X") {
+                    controller.audioPlayer.value.setSpeed(0.75);
+                }
+                if (value == "0.1X") {
+                    controller.audioPlayer.value.setSpeed(0.1);
+                }
+                if (value == "1.25X") {
+                    controller.audioPlayer.value.setSpeed(1.25);
+                }
+                if (value == "1.5X") {
+                    controller.audioPlayer.value.setSpeed(1.5);
+                }
+                if (value == "1.75X") {
+                    controller.audioPlayer.value.setSpeed(1.75);
+                }
+                if (value == "2.0X") {
+                    controller.audioPlayer.value.setSpeed(2.0);
+                }
+            },
+                  )
+
+                  Row(
+                    children: [
+                      Obx(
+                        () => IconButton(
+                            onPressed: () {
+                              if (controller.audioPlayer.value.volume > 0) {
+                                controller.audioPlayer.value.setVolume(0);
+                                controller.muteVal.value = true;
+                              } else {
+                                controller.audioPlayer.value.setVolume(1.0);
+                                controller.muteVal.value = false;
+                              }
+                            },
+                            icon: controller.muteVal.value
+                                ? const Icon(Icons.volume_up_rounded)
+                                : const Icon(Icons.volume_mute_rounded),
+                            color: Colors.white),
+                      ),
+                      Obx(
+                        () => Slider(
+                            value: controller.volume.value,
+                            onChanged: (value) {
+                              controller.volume.value =
+                                  controller.audioPlayer.value.volume;
+                              controller.audioPlayer.value.setVolume(value);
+                            }),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: Obx(
+                      () => ListView.builder(
+                          itemCount: controller.bookmarks.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              child: ListTile(
+                                title: Text(
+                                  "BookMark ${index + 1}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                subtitle: Text(
+                                  "${controller.bookmarks[index]}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              onTap: () => controller.audioPlayer.value
+                                  .seek(controller.bookmarks[index]),
+                            );
+                          }),
+                    ),
+                  )
