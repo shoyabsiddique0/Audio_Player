@@ -95,3 +95,33 @@ textStyle: const TextStyle(color: Colors.white),
                           }),
                     ),
                   )
+                  Obx(
+                    () => Container(
+                      margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: Stack(
+                        fit: StackFit.passthrough,
+                        children: controller.bookmarks.map((bookmark) {
+                          double bookmarkPosition =
+                              bookmark.inSeconds.toDouble();
+                          double bookmarkWidth = (bookmarkPosition /
+                                      controller.audioPlayer.value
+                                          .duration!.inSeconds
+                                          .toDouble()) *
+                                  MediaQuery.of(context).size.width -
+                              40;
+                          return GestureDetector(
+                            onTap: () {
+                              controller.audioPlayer.value.seek(bookmark);
+                            },
+                            child: Container(
+                              width: 2.0,
+                              height: 20.0,
+                              color: Colors.red, // Bookmark marker color
+                              margin:
+                                  EdgeInsets.only(left: bookmarkWidth),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  )

@@ -1,5 +1,4 @@
 import 'package:audio_player/player/controller/player_controller.dart';
-import 'package:audio_player/player/model/media_item.dart';
 import 'package:audio_player/player/model/position_data.dart';
 import 'package:audio_player/player/widgets/controls.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -8,11 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart' as rx;
 
 // ignore: must_be_immutable
 class Player extends StatelessWidget {
   Player({Key? key}) : super(key: key);
+  final mywidgetkey = GlobalKey();
+  var width;
   PlayerController controller = Get.put(PlayerController());
   Stream<PositionData> get _positionDataStream =>
       rx.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
@@ -52,8 +54,8 @@ class Player extends StatelessWidget {
                         ]),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            metadata.artUri,
+                          child: Image.network(
+                            metadata.artUri.toString(),
                           ),
                         ),
                       ),
@@ -78,7 +80,7 @@ class Player extends StatelessWidget {
                         height: 2.w,
                       ),
                       Text(
-                        metadata.artist,
+                        metadata.artist!,
                         style: TextStyle(
                             color: Colors.white70,
                             fontSize: 14.w,
@@ -97,56 +99,75 @@ class Player extends StatelessWidget {
                 stream: _positionDataStream,
                 builder: (context, snapshot) {
                   final position = snapshot.data;
+                  // controller.currPos.value =
+                  //     position.position.inSeconds.toDouble();
                   return Container(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    height: 40.w,
+                    margin: EdgeInsets.only(
+                      left: 30.w,
+                      right: 30.w,
+                    ),
                     child: Stack(
                       children: [
-                        ProgressBar(
-                          barHeight: 3.w,
-                          baseBarColor: Colors.white,
-                          bufferedBarColor: Colors.grey[300],
-                          progressBarColor: Colors.red,
-                          thumbColor: Colors.red,
-                          thumbRadius: 5.w,
-                          progress: position?.position ?? Duration.zero,
-                          total: position?.duration ?? Duration.zero,
-                          buffered: position?.bufferedPosition ?? Duration.zero,
-                          onSeek: (value) =>
-                              controller.audioPlayer.value.seek(value),
-                          timeLabelTextStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              fontSize: 12.w),
-                          barCapShape: BarCapShape.round,
-                          timeLabelPadding: 10.w,
-                          timeLabelType: TimeLabelType.totalTime,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            height: 25.w,
+                            child: ProgressBar(
+                              key: mywidgetkey,
+                              barHeight: 3.w,
+                              baseBarColor: Colors.white,
+                              bufferedBarColor: Colors.grey[300],
+                              progressBarColor: Colors.red,
+                              thumbColor: Colors.red,
+                              thumbRadius: 5.w,
+                              progress: position?.position ?? Duration.zero,
+                              total: position?.duration ?? Duration.zero,
+                              buffered:
+                                  position?.bufferedPosition ?? Duration.zero,
+                              onSeek: (value) =>
+                                  controller.audioPlayer.value.seek(value),
+                              timeLabelTextStyle: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 12.w),
+                              barCapShape: BarCapShape.round,
+                              timeLabelPadding: 10.w,
+                              timeLabelType: TimeLabelType.totalTime,
+                            ),
+                          ),
                         ),
-                        Obx(
-                          () => Stack(
-                            fit: StackFit.passthrough,
-                            children: controller.bookmarks.map((bookmark) {
+                        Obx(() => Stack(
+                                children: controller.bookmarks
+                                    .map((Duration bookmark) {
+                              width = width ??
+                                  mywidgetkey.currentContext?.findRenderObject()
+                                      as RenderBox;
+
                               double bookmarkPosition =
                                   bookmark.inSeconds.toDouble();
                               double bookmarkWidth = (bookmarkPosition /
-                                          controller.audioPlayer.value.duration!
-                                              .inSeconds
-                                              .toDouble()) *
-                                      MediaQuery.of(context).size.width -
-                                  10;
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.audioPlayer.value.seek(bookmark);
-                                },
-                                child: Container(
-                                  width: 5.0,
-                                  height: 20.0,
-                                  color: Colors.red, // Bookmark marker color
-                                  margin: EdgeInsets.only(left: bookmarkWidth),
+                                      controller
+                                          .audioPlayer.value.duration!.inSeconds
+                                          .toDouble()) *
+                                  width.size.width;
+                              return Container(
+                                width: 11.5.w,
+                                height: 20.0,
+                                margin: EdgeInsets.only(left: bookmarkWidth),
+                                // decoration: const BoxDecoration(
+                                //     image: DecorationImage(
+                                //         image: AssetImage(
+                                //             "assets/PlaylistAssets/pin.png"))),
+                                child: SvgPicture.asset(
+                                  "assets/PlaylistAssets/pin.svg",
+                                  color: bookmark.inSeconds >=
+                                          position!.position.inSeconds
+                                      ? Colors.white
+                                      : Colors.red,
                                 ),
                               );
-                            }).toList(),
-                          ),
-                        )
+                            }).toList()))
                       ],
                     ),
                   );
