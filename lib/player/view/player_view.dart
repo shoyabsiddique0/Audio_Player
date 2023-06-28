@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PlayerView extends StatelessWidget {
-  const PlayerView({Key? key}) : super(key: key);
+  final index;
+  final duration;
+  const PlayerView({Key? key, required this.index, required this.duration})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,10 @@ class PlayerView extends StatelessWidget {
         ],
       ),
       backgroundColor: Color(0xff1C1B1B),
-      body: Player(),
+      body: Player(
+        index: index,
+        duration: duration,
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:audio_player/BottomNav/bottom_nav_bar.dart';
 import 'package:audio_player/Home/controller/home_controller.dart';
 import 'package:audio_player/Home/widget/card.dart';
 import 'package:audio_player/Playlist/view/playlist_view.dart';
@@ -24,25 +25,25 @@ class HomeView extends StatelessWidget {
       link: "assets/HomeAssets/arijit.png",
       name: "Soulful Arijit",
       duration: "20:45 mins",
-      func: () => Get.to(() => const PlaylistView()),
+      func: () => Get.to(() => PlaylistView()),
     ),
     CardHome(
       link: "assets/HomeAssets/arijit.png",
       name: "Soulful Arijit",
       duration: "20:45 mins",
-      func: () => Get.to(() => const PlaylistView()),
+      func: () => Get.to(() => PlaylistView()),
     ),
     CardHome(
       link: "assets/HomeAssets/arijit.png",
       name: "Soulful Arijit",
       duration: "20:45 mins",
-      func: () => Get.to(() => const PlaylistView()),
+      func: () => Get.to(() => PlaylistView()),
     ),
     CardHome(
       link: "assets/HomeAssets/arijit.png",
       name: "Soulful Arijit",
       duration: "20:45 mins",
-      func: () => Get.to(() => const PlaylistView()),
+      func: () => Get.to(() => PlaylistView()),
     ),
   ];
   List<Widget> featuredList = [
@@ -50,22 +51,22 @@ class HomeView extends StatelessWidget {
         link: "assets/HomeAssets/kk.png",
         name: "It’s gonna be KK",
         duration: "20:45 mins",
-        func: () => Get.to(() => const PlaylistView())),
+        func: () => Get.to(() => PlaylistView())),
     CardHome(
         link: "assets/HomeAssets/kk.png",
         name: "It’s gonna be KK",
         duration: "20:45 mins",
-        func: () => Get.to(() => const PlaylistView())),
+        func: () => Get.to(() => PlaylistView())),
     CardHome(
         link: "assets/HomeAssets/kk.png",
         name: "It’s gonna be KK",
         duration: "20:45 mins",
-        func: () => Get.to(() => const PlaylistView())),
+        func: () => Get.to(() => PlaylistView())),
     CardHome(
         link: "assets/HomeAssets/kk.png",
         name: "It’s gonna be KK",
         duration: "20:45 mins",
-        func: () => Get.to(() => const PlaylistView())),
+        func: () => Get.to(() => PlaylistView())),
   ];
   @override
   Widget build(BuildContext context) {
@@ -78,35 +79,7 @@ class HomeView extends StatelessWidget {
       ),
       drawer: const Drawer(),
       backgroundColor: const Color(0xff1C1B1B),
-      bottomNavigationBar: Theme(
-          data: ThemeData(canvasColor: const Color(0xff1C1B1B)),
-          child: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  "assets/HomeAssets/home.svg",
-                  fit: BoxFit.fitHeight,
-                ),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    "assets/HomeAssets/category.svg",
-                  ),
-                  label: "Category"),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    "assets/HomeAssets/search.svg",
-                  ),
-                  label: "Search"),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    "assets/HomeAssets/profile.svg",
-                  ),
-                  label: "Profile"),
-            ],
-            showUnselectedLabels: true,
-          )),
+      bottomNavigationBar: BottomNavBar(),
       body: SingleChildScrollView(
           child: Column(
         children: [

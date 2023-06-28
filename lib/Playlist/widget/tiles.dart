@@ -1,4 +1,5 @@
 import 'package:audio_player/player/view/player_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,14 +8,17 @@ import 'package:get/get.dart';
 class Tiles extends StatelessWidget {
   final String name;
   final String artist;
-  final String image;
-  final String duration;
+  final Uri image;
+  final Duration duration;
+
+  final int index;
   const Tiles(
       {Key? key,
       required this.name,
       required this.artist,
       required this.image,
-      required this.duration})
+      required this.duration,
+      required this.index})
       : super(key: key);
 
   @override
@@ -22,9 +26,12 @@ class Tiles extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 6.w),
       child: ListTile(
-        onTap: () => Get.to(() => PlayerView()),
-        leading: Image.asset(
-          image,
+        onTap: () => Get.to(() => PlayerView(
+              index: index,
+              duration: Duration.zero,
+            )),
+        leading: CachedNetworkImage(
+          imageUrl: image.toString(),
           width: 80.w,
           height: 80.w,
         ),
@@ -56,7 +63,7 @@ class Tiles extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  duration,
+                  "${duration.inMinutes}:${duration.inSeconds % 60}",
                   style: TextStyle(color: Colors.white, fontSize: 15.w),
                 ),
                 SvgPicture.asset("assets/PlaylistAssets/heart.svg"),

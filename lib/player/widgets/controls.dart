@@ -15,14 +15,14 @@ class Controls extends StatelessWidget {
           final processingState = playerState?.processingState;
           final playing = playerState?.playing;
           if (!(playing ?? false)) {
-            return TextButton(
-                onPressed: () {
+            return GestureDetector(
+                onTap: () {
                   audioPlayer.play();
                 },
                 child: SvgPicture.asset("assets/PlaylistAssets/play1.svg"));
           } else if (processingState != ProcessingState.completed) {
-            return TextButton(
-                onPressed: () {
+            return GestureDetector(
+                onTap: () {
                   audioPlayer.pause();
                 },
                 child: SvgPicture.asset("assets/PlaylistAssets/pause.svg"));
